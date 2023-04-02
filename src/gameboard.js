@@ -68,4 +68,6 @@ function Gameboard() {
   function isAllAttacked() {
     return spaces === 0;
   }
+
+  return { placeShip, receiveAttack };
 }
