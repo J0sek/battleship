@@ -13,3 +13,5 @@ function Ship(length) {
 
   return { hit, isSunk };
 }
+
+export default Ship;
