@@ -3,9 +3,9 @@ import Ship from "./ship.js";
 function Gameboard() {
   const boardArray = [[], [], [], [], [], [], [], [], [], []];
 
-  const spaces = 100;
+  let spaces = 100;
 
-  const shipCount = 0;
+  let shipCount = 0;
 
   function placeShip(length, x, y, axis) {
     let newShip = Ship(length);
