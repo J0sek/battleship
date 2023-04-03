@@ -49,7 +49,7 @@ function Gameboard() {
     if (boardArray[x][y] === undefined) {
       boardArray[x][y] === "x";
       spaces--;
-      return;
+      return "miss";
     }
 
     if (boardArray[x][y] === "x" || boardArray[x][y] === "o") {
@@ -58,7 +58,10 @@ function Gameboard() {
 
     boardArray[x][y].hit();
     boardArray[x][y] = "o";
-    if (boardArray.isSunk()) shipCount--;
+    if (boardArray.isSunk()) {
+      shipCount--;
+    }
+    return "hit";
   }
 
   function isAllSunk() {
