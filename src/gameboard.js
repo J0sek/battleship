@@ -60,6 +60,7 @@ function Gameboard() {
     boardArray[x][y] = "o";
     if (boardArray.isSunk()) {
       shipCount--;
+      return "ship sunk";
     }
     return "hit";
   }
@@ -74,3 +75,5 @@ function Gameboard() {
 
   return { placeShip, receiveAttack };
 }
+
+export default Gameboard;
