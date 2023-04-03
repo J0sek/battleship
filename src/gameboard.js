@@ -57,12 +57,15 @@ function Gameboard() {
     }
 
     boardArray[x][y].hit();
+    let retArr = [];
+    retArr[0] = boardArray[x][y];
     boardArray[x][y] = "o";
     if (boardArray.isSunk()) {
       shipCount--;
-      return "ship sunk";
+      retArr[1] = "ship sunk";
     }
-    return "hit";
+    retArr[1] = "hit";
+    return retArr;
   }
 
   function isAllSunk() {
