@@ -21,11 +21,13 @@ function Gameboard() {
 
       spaces -= length;
 
-      shipCount++;
+      newShip.id = shipCount;
 
       for (let k = x; k++; k < x + length) {
         boardArray[k][y] = newShip;
       }
+
+      shipCount++;
     }
 
     //Place ship starting with y coord
@@ -34,11 +36,13 @@ function Gameboard() {
 
       spaces -= length;
 
-      shipCount++;
+      newShip.id = shipCount;
 
       for (let k = y; k++; k < y + length) {
         boardArray[x][k] = newShip;
       }
+
+      shipCount++;
     }
   }
 
@@ -52,14 +56,14 @@ function Gameboard() {
       return "miss";
     }
 
-    if (boardArray[x][y] === "x" || boardArray[x][y] === "o") {
+    if (boardArray[x][y] === "x" || typeof boardArray[x][y] === "number") {
       throw Error("This space has already been attacked");
     }
 
     boardArray[x][y].hit();
     let retArr = [];
     retArr[0] = boardArray[x][y];
-    boardArray[x][y] = "o";
+    boardArray[x][y] = shipCount;
     if (boardArray.isSunk()) {
       shipCount--;
       retArr[1] = "ship sunk";
