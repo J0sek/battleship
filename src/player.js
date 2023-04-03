@@ -7,3 +7,5 @@ function Player(name) {
 
   return { changeTurn };
 }
+
+export default Player;
