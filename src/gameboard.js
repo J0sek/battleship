@@ -72,6 +72,10 @@ function Gameboard() {
     return retArr;
   }
 
+  function readBoard(x, y) {
+    return boardArray[x][y];
+  }
+
   function isAllSunk() {
     return shipCount === 0;
   }
