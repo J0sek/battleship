@@ -1,8 +1,8 @@
-import Gameboard from "./gameboard";
+import Gameboard from "./gameboard.js";
 
 function Ai() {
   function randomAttackCoord() {
-    if (attackLog.length === 0) {
+    if (hitShipTracker.length === 0) {
       let x = Math.floor(Math.random() * 10);
       while (x > 9) {
         x = Math.floor(Math.random() * 10);
@@ -16,7 +16,7 @@ function Ai() {
   }
 
   function randomAdjacent(x, y) {
-    dice = Math.random();
+    let dice = Math.random();
     if (dice > 0 && dice <= 0.25) return [x + 1, y];
     if (dice > 0.25 && dice <= 0.5) return [x - 1, y];
     if (dice > 0.5 && dice <= 0.75) return [x, y + 1];
@@ -41,20 +41,20 @@ function Ai() {
 
   function directionalHit() {
     let coin = Math.random();
-    if (hitShipTracker[hitShipTracker.length][0] === hitShipTracker[0][0]) {
+    if (hitShipTracker[hitShipTracker.length - 1][0] === hitShipTracker[0][0]) {
       return coin <= 0.5
-        ? [hitShipTracker[0][0], hitShipTracker.length[0][1] - 1]
+        ? [hitShipTracker[0][0], hitShipTracker[0][1] - 1]
         : [
-            hitShipTracker[hitShipTracker.length][0],
-            hitShipTracker[hitShipTracker.length][1] + 1,
+            hitShipTracker[hitShipTracker.length - 1][0],
+            hitShipTracker[hitShipTracker.length - 1][1] + 1,
           ];
     }
 
     return coin <= 0.5
-      ? [hitShipTracker[0][0] - 1, hitShipTracker.length[0][1]]
+      ? [hitShipTracker[0][0] - 1, hitShipTracker[0][1]]
       : [
-          hitShipTracker[hitShipTracker.length][0] + 1,
-          hitShipTracker[hitShipTracker.length][1],
+          hitShipTracker[hitShipTracker.length - 1][0] + 1,
+          hitShipTracker[hitShipTracker.length - 1][1],
         ];
   }
 
