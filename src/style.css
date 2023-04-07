@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.game-title {
+  font-size: 50px;
+  position: relative;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.name-block>* {
+  display: block;
+}
+
+.name-block {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}
+
+#player-name {
+  width: 400px;
+  height: 50px;
+  font-size: 44px;
+  text-align: center;
+}
+
+.player-name-label {
+  font-size: 30px;
+}
+
+.player-name-proceed {
+  margin-top: 20px;
+  font-size: 30px;
+  background-color: transparent;
+  height: 40px;
+  width: 200px;
+}
