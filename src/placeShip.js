@@ -17,9 +17,15 @@ function makePlacementGrid() {
   gridToggleFrame.classList.add("grid-toggle-frame");
 
   gridToggleFrame.addEventListener("click", () => {
-    gridToggleFrame.style.flexDirection === "row"
-      ? (gridToggleFrame.style.flexDirection = "row-reverse")
-      : (gridToggleFrame.style.flexDirection = "row");
+    function f1() {
+      gridToggleFrame.style.flexDirection = "row-reverse";
+    }
+
+    function f2() {
+      gridToggleFrame.style.flexDirection = "row";
+    }
+
+    gridToggleFrame.style.flexDirection === "row-reverse" ? f2() : f1();
   });
 
   const gridToggleSlider = document.createElement("div");
@@ -46,49 +52,71 @@ function makePlacementGrid() {
   }
 }
 
-function placeShipOnGrid(fn, n, axis) {
-  const gridBlocks = document.querySelectorAll(".placement-grid-block");
-
+function hover() {
   if (axis === "x") {
-    gridBlocks.forEach((x) => {
-      x.addEventListener("mouseenter", () => {
-        let xCoord = Number(x.classList[1][2]);
-        if (xCoord + n <= 10) {
-          let yCoord = Number(x.classList[2][2]);
-          for (let k = 0; k < n; k++) {
-            const newBlock = document.querySelector(
-              `.x-${xCoord + k}.y-${yCoord}`
-            );
-            newBlock.style.backgroundColor = "red";
-          }
-        }
-      });
-
-      x.addEventListener("click", () => {
-        fn;
-      });
-
-      x.addEventListener("mouseleave", () => {
-        let xCoord = Number(x.classList[1][2]);
-        if (xCoord + n <= 10) {
-          let yCoord = Number(x.classList[2][2]);
-          for (let k = 0; k < n; k++) {
-            const newBlock = document.querySelector(
-              `.x-${xCoord + k}.y-${yCoord}`
-            );
-            newBlock.style.backgroundColor = "transparent";
-          }
-        }
-      });
-    });
+    if (xCoord + n <= 10) {
+      for (let k = 0; k < n; k++) {
+        const newBlock = document.querySelector(`.x-${xCoord + k}.y-${yCoord}`);
+        newBlock.style.backgroundColor = "red";
+      }
+    }
   }
 
   if (axis === "y") {
-    gridBlocks.forEach((x) => {
-      x.addEventListener("mouseenter", () => {
-        let yCoord = Number(x.classList[2][2]);
+    if (yCoord + n <= 10) {
+      for (let k = 0; k < n; k++) {
+        const newBlock = document.querySelector(`.x-${xCoord}.y-${yCoord + k}`);
+        newBlock.style.backgroundColor = "red";
+      }
+    }
+  }
+}
+
+function leave() {
+  if (axis === "x") {
+    if (xCoord + n <= 10) {
+      for (let k = 0; k < n; k++) {
+        const newBlock = document.querySelector(`.x-${xCoord + k}.y-${yCoord}`);
+        newBlock.style.backgroundColor = "transparent";
+      }
+    }
+  }
+
+  if (axis === "y") {
+    if (yCoord + n <= 10) {
+      for (let k = 0; k < n; k++) {
+        const newBlock = document.querySelector(`.x-${xCoord}.y-${yCoord + k}`);
+        newBlock.style.backgroundColor = "transparent";
+      }
+    }
+  }
+}
+
+function fnWithArgs() {
+  return fn(xCoord, yCoord);
+}
+
+function placeShipOnGrid(n, axis, fn, ...args) {
+  const gridBlocks = document.querySelectorAll(".placement-grid-block");
+
+  gridBlocks.forEach((x) => {
+    let yCoord = Number(x.classList[2][2]);
+    let xCoord = Number(x.classList[1][2]);
+
+    function hover() {
+      if (axis === "x") {
+        if (xCoord + n <= 10) {
+          for (let k = 0; k < n; k++) {
+            const newBlock = document.querySelector(
+              `.x-${xCoord + k}.y-${yCoord}`
+            );
+            newBlock.style.backgroundColor = "red";
+          }
+        }
+      }
+
+      if (axis === "y") {
         if (yCoord + n <= 10) {
-          let xCoord = Number(x.classList[1][2]);
           for (let k = 0; k < n; k++) {
             const newBlock = document.querySelector(
               `.x-${xCoord}.y-${yCoord + k}`
@@ -96,16 +124,23 @@ function placeShipOnGrid(fn, n, axis) {
             newBlock.style.backgroundColor = "red";
           }
         }
-      });
+      }
+    }
 
-      x.addEventListener("click", () => {
-        fn;
-      });
+    function leave() {
+      if (axis === "x") {
+        if (xCoord + n <= 10) {
+          for (let k = 0; k < n; k++) {
+            const newBlock = document.querySelector(
+              `.x-${xCoord + k}.y-${yCoord}`
+            );
+            newBlock.style.backgroundColor = "transparent";
+          }
+        }
+      }
 
-      x.addEventListener("mouseleave", () => {
-        let yCoord = Number(x.classList[2][2]);
+      if (axis === "y") {
         if (yCoord + n <= 10) {
-          let xCoord = Number(x.classList[1][2]);
           for (let k = 0; k < n; k++) {
             const newBlock = document.querySelector(
               `.x-${xCoord}.y-${yCoord + k}`
@@ -113,11 +148,41 @@ function placeShipOnGrid(fn, n, axis) {
             newBlock.style.backgroundColor = "transparent";
           }
         }
-      });
-    });
+      }
+    }
 
-    gridBlocks.forEach((x) => {});
-  }
+    function fnWithArgs() {
+      return fn(xCoord, yCoord);
+    }
+
+    x.addEventListener("mouseleave", leave);
+    x.addEventListener("click", fnWithArgs);
+    x.addEventListener("mouseenter", hover);
+
+    x.addEventListener("click", () => {
+      let placementGridHolder = document.querySelector(
+        ".placement-grid-holder"
+      );
+
+      placementGridHolder.removeChild(
+        document.querySelector(".placement-grid")
+      );
+
+      const placementGrid = document.createElement("div");
+      placementGrid.classList.add("placement-grid");
+
+      for (let j = 0; j < 10; j++) {
+        for (let k = 0; k < 10; k++) {
+          let gridBlock = document.createElement("div");
+          gridBlock.classList.add("placement-grid-block", `x-${j}`, `y-${k}`);
+
+          placementGrid.append(gridBlock);
+        }
+      }
+
+      placementGridHolder.append(placementGrid);
+    });
+  });
 }
 
 export { placeShipOnGrid, makePlacementGrid };

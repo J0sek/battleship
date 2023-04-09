@@ -28,5 +28,5 @@ startForm.addEventListener("submit", () => {
 
   makePlacementGrid();
 
-  placeShipOnGrid(() => null, 5, "y");
+  placeShipOnGrid(5, "x", (x, y) => console.log(x, y));
 });
