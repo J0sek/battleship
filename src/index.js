@@ -2,7 +2,7 @@ import Ai from "./ai.js";
 import Gameboard from "./gameboard.js";
 import Player from "./player.js";
 import Ship from "./ship.js";
-import { placeShipOnGrid, makePlacementGrid } from "./placeShip.js";
+import { placeShipOnGrid, makePlacementGrid, test1 } from "./placeShip.js";
 import "./style.css";
 
 let player;
@@ -27,6 +27,8 @@ startForm.addEventListener("submit", () => {
   player = Player(playerNameInfo);
 
   makePlacementGrid();
+
+  test1();
 
   placeShipOnGrid(5, "x", (x, y) => console.log(x, y));
 });

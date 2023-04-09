@@ -158,7 +158,7 @@ function placeShipOnGrid(n, axis, fn, ...args) {
     x.addEventListener("mouseleave", leave);
     x.addEventListener("click", fnWithArgs);
     x.addEventListener("mouseenter", hover);
-
+    /*
     x.addEventListener("click", () => {
       let placementGridHolder = document.querySelector(
         ".placement-grid-holder"
@@ -181,8 +181,74 @@ function placeShipOnGrid(n, axis, fn, ...args) {
       }
 
       placementGridHolder.append(placementGrid);
-    });
+      
+    });*/
   });
 }
 
-export { placeShipOnGrid, makePlacementGrid };
+let currAxis = "x";
+
+function reset() {
+  let placementGridHolder = document.querySelector(".placement-grid-holder");
+
+  placementGridHolder.removeChild(document.querySelector(".placement-grid"));
+
+  const placementGrid2 = document.createElement("div");
+  placementGrid2.classList.add("placement-grid");
+
+  for (let j = 0; j < 10; j++) {
+    for (let k = 0; k < 10; k++) {
+      let gridBlock = document.createElement("div");
+      gridBlock.classList.add("placement-grid-block", `x-${j}`, `y-${k}`);
+
+      placementGrid2.append(gridBlock);
+    }
+  }
+
+  placementGridHolder.append(placementGrid2);
+}
+
+function test1(arr) {
+  const placementGrid = document.querySelector(".placement-grid");
+  let index = 0;
+
+  function fn1() {
+    console.log("fn1");
+    if (index < 5);
+    console.log(index);
+    index++;
+  }
+
+  placementGrid.addEventListener("click", fn1);
+
+  const gridToggleFrame = document.querySelector(".grid-toggle-frame");
+
+  gridToggleFrame.addEventListener("click", () => {
+    currAxis === "x" ? (currAxis = "y") : (currAxis = "x");
+    reset();
+    const placementGrid = document.querySelector(".placement-grid");
+    placeShipOnGrid(5, currAxis, (x, y) => console.log(x, y));
+    placementGrid.addEventListener("click", fn1);
+    placementGrid.addEventListener("click", () => {
+      if (index === 5) {
+        console.log("over");
+
+        placementGrid.removeEventListener("click", fn1);
+
+        reset();
+      }
+    });
+  });
+
+  placementGrid.addEventListener("click", () => {
+    if (index === 5) {
+      console.log("over");
+
+      placementGrid.removeEventListener("click", fn1);
+
+      reset();
+    }
+  });
+}
+
+export { placeShipOnGrid, makePlacementGrid, test1 };
